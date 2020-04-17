@@ -1,12 +1,13 @@
 import copy
 from collections import defaultdict
 from get_primes import get_prime_implicants
+from petrick import petrick
+from utils import impn_set_tost
 
 def to_dim_and_not(imp_st):
     dim_and_not = imp_st.split("x")
     dim_and_not = list(filter(lambda t: t, dim_and_not))
     return dim_and_not
-
 
 def _implicant_dim(imp_st):
     dim_and_not = to_dim_and_not(imp_st)
@@ -21,7 +22,6 @@ def _implicant_dim(imp_st):
         dims.append(n)
 
     return max(dims)
-
 
 def impst_to_dict(imp_st):
     dim_and_not = to_dim_and_not(imp_st)
@@ -82,11 +82,6 @@ def parse_xst_to_minterms(bool_st):
         out = out.union(impst_covered_minterms(s, dim))
     return out
 
-
-
-
-
-
 def _s_get_one(s):
     return next(iter(s))
 
@@ -100,33 +95,7 @@ def account_essentials(c_imp_coverage, c_minterm_coveredby, remove_imps):
         del ret[m]
     return ret
 
-def _multiply_imp_setsets(a,b):
-    out = set()
-    for a_imp_set in a:
-        for b_imp_set in b:
-            out.add(a_imp_set.union(b_imp_set))
 
-    return out
-
-def remove_supersets(imp_setsets):
-    to_remove = set()
-    for imp_set in imp_setsets:
-        for imp_set_b in imp_setsets:
-            if imp_set!= imp_set_b and imp_set_b.issubset(imp_set):
-                to_remove.add(imp_set)
-    return imp_setsets-to_remove
-
-def impn_to_impst(impn):
-    out=[]
-    for _, c in enumerate(impn):
-        idx = _+1
-        if c=="1":
-            out.append(f"x{idx}")
-        elif c=="0":
-            out.append(f"x{idx}'")
-        else:
-            assert c=="_"
-    return "".join(out)
 
 def impn_len(impn):
     tot=0
@@ -136,29 +105,6 @@ def impn_len(impn):
         else:
             tot+=1
     return tot
-
-def impn_set_tost(impn_set):
-    out=list(map(lambda impn:impn_to_impst(impn),impn_set ))
-    return "+".join(out)
-
-
-
-def petrick(minterm_coveredby,essential):
-    minterm_coverers=[]
-    for m in minterm_coveredby:
-        minterm_coverers.append({frozenset(minterm_coveredby[m])})
-
-    setset=minterm_coverers[0]
-    for idx, imp_setset in enumerate(minterm_coverers):
-        if idx==0:
-            continue
-        setset=_multiply_imp_setsets(setset,imp_setset)
-    setset=remove_supersets(setset)
-
-    min_n = min(map(lambda s:len(s),setset))
-    smallest=filter(lambda s:len(s)==min_n,setset)
-    extend_essential=map(lambda impn_set:impn_set.union(essential), smallest)
-    return list(extend_essential)
 
 
 def get_min_implicants(req_minterms, prime_implicants, dim):
