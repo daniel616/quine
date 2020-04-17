@@ -10,7 +10,6 @@ def remove_supersets(imp_setsets):
 
 
 def _multiply_imp_setsets(a,b):
-    import pdb; pdb.set_trace()
     out = set()
     for a_imp_set in a:
         for b_imp_set in b:
