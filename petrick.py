@@ -37,4 +37,4 @@ def petrick(minterm_coveredby,essential):
     extend_essential=map(lambda impn_set:impn_set.union(essential), smallest)
 
 
-    return [impn_set_tost(t) for t in extend_essential]
+    return sorted([impn_set_tost(t) for t in extend_essential])

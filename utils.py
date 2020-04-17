@@ -24,7 +24,7 @@ def impn_to_impst(impn):
 
 def impn_set_tost(impn_set):
     out=list(map(lambda impn:impn_to_impst(impn),impn_set ))
-    return "+".join(out)
+    return " + ".join(out)
 
 def impst_to_dict(imp_st):
     dim_and_not = to_dim_and_not(imp_st)

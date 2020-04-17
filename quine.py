@@ -55,7 +55,7 @@ def brute_match(ast,bst):
 
 def test(st):
     minterms, dim,dcareterms = parse(st)
-    primes = get_prime_implicants(minterms)
+    primes = get_prime_implicants(minterms.union(dcareterms))
     x = get_min_implicants(minterms, primes, dim)
     print("reducing ",st)
     print("calculated reductions: ",x)
